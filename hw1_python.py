@@ -3,7 +3,6 @@
 
 def open_file(filename):
     vectors = []
-
     with open(filename, 'r') as f:
         for line in f:
             values = line.strip().split(',')
@@ -13,7 +12,6 @@ def open_file(filename):
 
 
 def k_means(k,input_data,iter = 200):
-    
     epsilon = 0.001
     vectors = open_file(input_data)
     centroids = []
