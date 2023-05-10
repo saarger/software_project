@@ -13,34 +13,44 @@ def open_file(filename):
 
 
 def k_means(k,input_data,iter = 200):
-    
-    epsilon = 0.001
-    vectors = open_file(input_data)
-    centroids = []
+    try:
+        if not 1<iter<k:
+            print("Invalid maximum iteration!")
+            return
+        epsilon = 0.001
+        vectors = open_file(input_data)
+        if not 1 < k < len(vectors):
+            print("Invalid number of clusters!")
+            return
+        centroids = []
 
-    for i in range(k):
-        centroids.append(vectors[i])
+        for i in range(k):
+            centroids.append(vectors[i])
 
-    i = 0
-    delta_uk = 1
+        i = 0
+        delta_uk = 1
 
-    while i < iter and delta_uk > epsilon:
-        dic = update_dict(centroids)
-        for vector in vectors:
-            min_dis = float('inf')
-            for center in centroids:
-                dis = d(vector,center)
-                if dis < min_dis: # find the nearest center
-                    min_dis = dis
-                    this_vector_center = center
-        # update centroids
-            dic.get(this_vector_center).append(vector)
+        while i < iter and delta_uk > epsilon:
+            dic = update_dict(centroids)
+            for vector in vectors:
+                min_dis = float('inf')
+                for center in centroids:
+                    dis = d(vector, center)
+                    if dis < min_dis:  # find the nearest center
+                        min_dis = dis
+                        this_vector_center = center
+                # update centroids
+                dic.get(this_vector_center).append(vector)
 
-        centroids,delta_uk = update_centroids(dic)
-        i+=1
+            centroids, delta_uk = update_centroids(dic)
+            i += 1
 
-    centroids = adapt_to_assumptions(centroids)
-    return centroids
+        centroids = adapt_to_assumptions(centroids)
+        return centroids
+    except Exception:
+        print("An Error Has Occurred")
+
+
 
 # update centroids
 def update_centroids(dic):
@@ -79,6 +89,6 @@ def adapt_to_assumptions(centroids):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
-    print(k_means(15,'/Users/oit/Desktop/tests/input_3.txt',300))
+    k_means(10005,'/Users/nadav/Downloads/tests/input_1.txt',3000)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
