@@ -13,7 +13,7 @@ def open_file(filename):
 
 
 def k_means(k,input_data,iter = 200):
-    
+    nadav = 0
     epsilon = 0.001
     vectors = open_file(input_data)
     centroids = []
