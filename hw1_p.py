@@ -21,9 +21,6 @@ def k_means(k,input_data,iter = 200):
             return
         centroids = []
 
-        epsilon = 0.001
-        vectors = open_file(input_data)
-        centroids = []
 
 
         for i in range(k):
