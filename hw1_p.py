@@ -91,4 +91,4 @@ def adapt_to_assumptions(centroids):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
-    print(k_means(3,'/Users/oit/Desktop/tests/input_1.txt',600))
+    print(k_means(3,'/Users/nadav/Downloads/tests/input_1.txt',600))
