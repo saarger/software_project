@@ -1,3 +1,6 @@
+import sys
+
+
 def open_file(filename):
     vectors = []
     with open(filename, 'r') as f:
@@ -8,7 +11,7 @@ def open_file(filename):
     return vectors
 
 
-def k_means(k,input_data,iter = 200):
+def k_means(k,iter,input_data):
 
     try:
         if not 1<iter<1000:
@@ -85,6 +88,29 @@ def adapt_to_assumptions(centroids):
         new_centroids.append(tuple(['{:.4f}'.format(centroid[i]) for i in range(len(centroid))]))
     return new_centroids
 
+def arg_parsing():
+
+
+    try:
+        args = sys.argv
+        if len(args)>4 or len(args)<3:
+            raise Exception
+        k = int(args[1])
+        if len(args) == 3:
+            max_iter = 200
+            idx_of_file = 2
+        else:
+            idx_of_file = 3
+            max_iter = int(args[2])
+        input_filename = args[idx_of_file]
+        print(k_means(k, max_iter, input_filename))
+    except Exception:
+        print("An Error Has Occurred")
+
+
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    arg_parsing()
 
