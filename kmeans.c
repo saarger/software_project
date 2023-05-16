@@ -226,7 +226,7 @@ double** read_file(char *input_filename)
 }
 
 
-int main(int argc,char *argv[]) {
+void main(int argc,char *argv[]) {
     int iter = 200;
     int k;
     int file_index = 2;
@@ -264,6 +264,5 @@ int main(int argc,char *argv[]) {
     printVectors(res,k);
 
     free(res);
-    return 1;
 }
 
