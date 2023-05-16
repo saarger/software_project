@@ -1,6 +1,6 @@
 import sys
 
-
+# open file and read the vectors
 def open_file(filename):
     vectors = []
     with open(filename, 'r') as f:
@@ -10,9 +10,9 @@ def open_file(filename):
             vectors.append(vector)
     return vectors
 
-
+# k-means algorithm
 def k_means(k,iter,input_data):
-
+    # check input
     try:
         if not 1<iter<1000:
             print("Invalid maximum iteration!")
@@ -25,13 +25,13 @@ def k_means(k,iter,input_data):
         centroids = []
 
 
-
+        # initialize centroids
         for i in range(k):
             centroids.append(vectors[i])
 
         i = 0
         delta_uk = 1
-
+        # run k-means algorithm
         while i < iter and delta_uk > epsilon:
             dic = update_dict(centroids)
             for vector in vectors:
@@ -74,14 +74,14 @@ def update_dict(centroids):
         dic[centroids[i]] = []
     return dic
 
-
+# calculate distance
 def d(p,q):
     sum = 0
     for i in range(len(p)):
         sum += (p[i]-q[i])**2
     return sum**0.5
 
-
+# adapt to assumptions
 def adapt_to_assumptions(centroids):
     new_centroids = []
     for centroid in centroids:
