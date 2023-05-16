@@ -41,10 +41,10 @@ int isInt(const char* str) {
 }
 
 double d(double* p, double* q){
-    int sum=0;
+    double sum=0;
     int i;
     for(i=0;i<size_vec;i++){
-        sum += pow(p[i] - q[i],2);
+        sum = sum + pow(p[i] - q[i],2);
     }
     return sqrt(sum);
 }
@@ -146,7 +146,7 @@ double** Kmeans(int k,int iter,char *input_filename){
         int* vector_cluster = (int*)calloc(num_vectors , sizeof(int));
         assert(vector_cluster);
         for (j = 0;j < num_vectors; j++) {
-            int min = int_max;
+            double min = int_max;
             for (l = 0;l<k;l++){
                 double distance = d(vectors[j],centroids[l]);
                 if (distance < min){
@@ -158,6 +158,7 @@ double** Kmeans(int k,int iter,char *input_filename){
         centroids = update_centroids(centroids,vector_cluster,k,vectors);
         i++;
         free(vector_cluster);
+
     }
     free(vectors);
     return centroids;
@@ -259,7 +260,6 @@ int main(int argc,char *argv[]) {
         file_index = 3;
     }
     input_filename = argv[file_index];
-
     res = Kmeans(k,iter,input_filename);
     printVectors(res,k);
 
