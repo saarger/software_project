@@ -264,5 +264,6 @@ int main(int argc,char *argv[]) {
     printVectors(res,k);
 
     free(res);
+    return 1;
 }
 
