@@ -4,13 +4,13 @@
 #include <math.h>
 #define int_max 2147483647
 
-double global_delta_uk = 1000000;
-int num_vectors,size_vec;
+double global_delta_uk = 1000000; // global variable for the delta uk
+int num_vectors,size_vec; // global variables for the number of vectors and the size of the vectors
 
 double* sumVector(double* p, double* q);
 double** Kmeans(int k,int iter,char *InputData);
 double** read_file(char *input_filename);
-double d(double* p, double* q);
+double d(double* p, double* q); // distance function
 double* divideVector(double* p, double num);
 void assert(void* pointer);
 int isInt(const char* str);
@@ -55,6 +55,7 @@ void assert(void* pointer) {
     }
 }
 
+// divide vector function
 double* divideVector(double* p, double num) {
     int i;
     double* div = malloc(size_vec * sizeof(double));
@@ -67,6 +68,7 @@ double* divideVector(double* p, double num) {
     return div;
 }
 
+// sum vector function
 double* sumVector(double* p, double* q){
     int i;
     double* sum = calloc(size_vec,sizeof(double));
@@ -95,6 +97,7 @@ double** update_centroids(double** centroids,int* vector_cluster,int k,double** 
     }
     maxdeltaUk = 0;
     deltauk = 0;
+    // for loop for the centroids
     for (i = 0; i < k; i++) {
         double* sum = (double *)calloc(size_vec, sizeof(double));
         assert(sum);
@@ -115,7 +118,7 @@ double** update_centroids(double** centroids,int* vector_cluster,int k,double** 
     return new_centroids;
 }
 
-
+// Kmeans function
 double** Kmeans(int k,int iter,char *input_filename){
     double epsilon = 0.001;
     int j;
@@ -126,7 +129,7 @@ double** Kmeans(int k,int iter,char *input_filename){
     vectors = read_file(input_filename);
     assert(vectors);
 
-
+    // check if k is valid
     if (k >= num_vectors && k <= 1){
         fprintf(stderr, "%s\n", "Invalid number of clusters!");
         exit(EXIT_FAILURE);
@@ -142,6 +145,7 @@ double** Kmeans(int k,int iter,char *input_filename){
         centroids[i] = vectors[i];
     }
     i = 0;
+    // while loop for the iterations
     while (i < iter && global_delta_uk>epsilon){
         int* vector_cluster = (int*)calloc(num_vectors , sizeof(int));
         assert(vector_cluster);
@@ -160,10 +164,11 @@ double** Kmeans(int k,int iter,char *input_filename){
         free(vector_cluster);
 
     }
-    free(vectors);
-    return centroids;
+    free(vectors); // free the vectors
+    return centroids; // return the centroids
 }
 
+// read file function
 double** read_file(char *input_filename)
 {
     int index=0, line=0;
