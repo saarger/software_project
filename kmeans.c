@@ -185,7 +185,6 @@ double** Kmeans(int k,int iter){
         free(vector_cluster);
 
     }
-    for (i = 0; i < num_vectors; i++) {
         free(vectors[i]);
     }
     free(vectors);
