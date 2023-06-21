@@ -4,13 +4,17 @@
 #include <math.h>
 #define int_max 2147483647
 
-double global_delta_uk = 1000000; // global variable for the delta uk
-int num_vectors,size_vec; // global variables for the number of vectors and the size of the vectors
+double global_delta_uk = 1000000;
+int num_vectors=0;
+int size_vec = 1;
+char c;
+double vec;
+
 
 double* sumVector(double* p, double* q);
-double** Kmeans(int k,int iter,char *InputData);
+double** Kmeans(int k,int iter);
 double** read_file(char *input_filename);
-double d(double* p, double* q); // distance function
+double d(double* p, double* q);
 double* divideVector(double* p, double num);
 void assert(void* pointer);
 int isInt(const char* str);
@@ -32,6 +36,7 @@ void printVectors(double** res,int k){
             }
         }
     }
+    printf("\n");
 }
 
 int isInt(const char* str) {
@@ -55,7 +60,6 @@ void assert(void* pointer) {
     }
 }
 
-// divide vector function
 double* divideVector(double* p, double num) {
     int i;
     double* div = malloc(size_vec * sizeof(double));
@@ -68,7 +72,6 @@ double* divideVector(double* p, double num) {
     return div;
 }
 
-// sum vector function
 double* sumVector(double* p, double* q){
     int i;
     double* sum = calloc(size_vec,sizeof(double));
@@ -97,7 +100,6 @@ double** update_centroids(double** centroids,int* vector_cluster,int k,double** 
     }
     maxdeltaUk = 0;
     deltauk = 0;
-    // for loop for the centroids
     for (i = 0; i < k; i++) {
         double* sum = (double *)calloc(size_vec, sizeof(double));
         assert(sum);
@@ -114,22 +116,42 @@ double** update_centroids(double** centroids,int* vector_cluster,int k,double** 
             maxdeltaUk = deltauk;
         }
     }
+
+    free(centroids);
     global_delta_uk = maxdeltaUk;
     return new_centroids;
 }
 
-// Kmeans function
-double** Kmeans(int k,int iter,char *input_filename){
+double** load_vectors(double** vectors){
+    int i;
+    int j;
+    for(i=0;i<num_vectors;
+
+    i++){
+        vectors[i] = calloc(size_vec,sizeof(double));
+        assert(vectors[i]);
+
+        for(j=0;j<size_vec;j++){
+            scanf("%lf%c",&vec,&c);
+            vectors[i][j] = vec;
+        }
+    }
+    return vectors;
+}
+
+double** Kmeans(int k,int iter){
     double epsilon = 0.001;
     int j;
     int i;
     int l;
     double** centroids;
-    double** vectors;
-    vectors = read_file(input_filename);
+    double** vectors=NULL;
+    vectors = calloc(num_vectors,sizeof(double*));
+    assert(vectors);
+    vectors = load_vectors(vectors);
     assert(vectors);
 
-    // check if k is valid
+
     if (k >= num_vectors && k <= 1){
         fprintf(stderr, "%s\n", "Invalid number of clusters!");
         exit(EXIT_FAILURE);
@@ -145,7 +167,6 @@ double** Kmeans(int k,int iter,char *input_filename){
         centroids[i] = vectors[i];
     }
     i = 0;
-    // while loop for the iterations
     while (i < iter && global_delta_uk>epsilon){
         int* vector_cluster = (int*)calloc(num_vectors , sizeof(int));
         assert(vector_cluster);
@@ -164,14 +185,13 @@ double** Kmeans(int k,int iter,char *input_filename){
         free(vector_cluster);
 
     }
-    for (i = 0; i < k; ++i) {
-        free(centroids[i]);
+    for (i = 0; i < num_vectors; i++) {
+        free(vectors[i]);
     }
-    free(vectors); // free the vectors
-    return centroids; // return the centroids
+    free(vectors);
+    return centroids;
 }
 
-// read file function
 double** read_file(char *input_filename)
 {
     int index=0, line=0;
@@ -237,11 +257,10 @@ double** read_file(char *input_filename)
 int main(int argc,char *argv[]) {
     int iter = 200;
     int k;
-    int file_index = 2;
-    char *input_filename;
+    int bool=1;
     double** res;
 
-    if (argc < 3 || argc > 4)
+    if (argc < 2 || argc > 3)
     {
         assert(NULL);
     }
@@ -250,7 +269,7 @@ int main(int argc,char *argv[]) {
         assert(NULL);
     }
     k = atoi(argv[1]);
-    if (argc == 4)
+    if (argc == 3)
     {
         if (isInt(argv[2]) == 1)
         {
@@ -265,12 +284,24 @@ int main(int argc,char *argv[]) {
         {
             assert(NULL);
         }
-        file_index = 3;
-    }
-    input_filename = argv[file_index];
-    res = Kmeans(k,iter,input_filename);
-    printVectors(res,k);
 
+    }
+
+    /**count num vectors and size of vectors**/
+    while (scanf("%lf%c", &vec, &c) == 2)
+    {
+        if (c == ',' && bool){
+            size_vec++;
+        }
+        if (c == '\n') {
+
+            num_vectors++;
+            bool = 0;
+        }
+    }
+    rewind(stdin);
+    res = Kmeans(k,iter);
+    printVectors(res,k);
     free(res);
     return 0;
 }
