@@ -164,6 +164,9 @@ double** Kmeans(int k,int iter,char *input_filename){
         free(vector_cluster);
 
     }
+    for (i = 0; i < k; ++i) {
+        free(centroids[i]);
+    }
     free(vectors); // free the vectors
     return centroids; // return the centroids
 }
