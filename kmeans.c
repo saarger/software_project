@@ -117,9 +117,8 @@ double** update_centroids(double** centroids,int* vector_cluster,int k,double** 
         }
     }
 
-    // free(centroids);
+    free(centroids);
     global_delta_uk = maxdeltaUk;
-
     centroids = new_centroids;
     for (i = 0; i < k; i++) {
         free(new_centroids[i]);
@@ -186,12 +185,7 @@ double** Kmeans(int k,int iter){
                 }
             }
         }
-        double **res = (double **)calloc(k,sizeof(double*));
-        res = update_centroids(centroids,vector_cluster,k,vectors);
-        for (int i1 = 0; i1 < k; i1++)
-        {
-            
-        }
+        
         
         centroids = update_centroids(centroids,vector_cluster,k,vectors);
         i++;
