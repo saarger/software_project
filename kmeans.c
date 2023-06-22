@@ -302,6 +302,9 @@ int main(int argc,char *argv[]) {
     rewind(stdin);
     res = Kmeans(k,iter);
     printVectors(res,k);
+    for (int i = 0; i < k; i++) {
+        free(res[i]);
+    }
     free(res);
     return 0;
 }
