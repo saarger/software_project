@@ -266,6 +266,7 @@ int main(int argc,char *argv[]) {
     int k;
     int bool=1;
     double** res;
+    int i;
 
     if (argc < 2 || argc > 3)
     {
@@ -309,7 +310,7 @@ int main(int argc,char *argv[]) {
     rewind(stdin);
     res = Kmeans(k,iter);
     printVectors(res,k);
-    for (int i = 0; i < k; i++) {
+    for (i = 0; i < k; i++) {
         free(res[i]);
     }
     free(res);
